@@ -18,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import com.walmart.entities.LevelDetail;
 import com.walmart.entities.Reservation;
+import com.walmart.entities.SeatHoldReservation;
 import com.walmart.exception.LevelNotFoundException;
 import com.walmart.exception.ReservationException;
 import com.walmart.exception.SeatHoldNotFoundException;
 import com.walmart.model.SeatHold;
 import com.walmart.repository.LevelRepository;
 import com.walmart.repository.ReservationRepository;
+import com.walmart.repository.SeatHoldReservationRepository;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -36,6 +38,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     ReservationRepository reservationRepository;
+
+    @Autowired
+    SeatHoldReservationRepository seatHoldReservationRepository;
 
     @Autowired
     CacheManager cacheManager;
@@ -87,22 +92,27 @@ public class TicketServiceImpl implements TicketService {
             String customerEmail) throws ReservationException, LevelNotFoundException {
         SeatHold holdSeat = null;
 
-        // TODO need to update key
-        boolean seatFound=false;
-        Optional<Integer> level= minLevel;
-        
-        while(!seatFound && level.get() <= maxLevel.get()){
+        boolean seatFound = false;
+        Optional<Integer> level = minLevel;
+
+        while (!seatFound && level.get() <= maxLevel.get()) {
             if (numSeats < numSeatsAvailable(level)) {
-                seatFound=true;
+                seatFound = true;
             }
-            level=Optional.of(level.get()+1);
+            level = Optional.of(level.get() + 1);
         }
-        
-        if (seatFound){
-           // holdSeat = holdSeatModel(customerEmail,level.get()-1, getRandomCode(), numSeats);
-            holdSeat = holdSeatModel(customerEmail,level.get()-1, numSeats);
+
+        if (seatFound) {
+            holdSeat = holdSeatModel(customerEmail, level.get() - 1, numSeats);
         }
-        
+
+        if (holdSeat != null) {
+            SeatHoldReservation seatHoldReservation = new SeatHoldReservation();
+            seatHoldReservation.setSeatHoldId(holdSeat.getId());
+            seatHoldReservation.setCustomerEmail(customerEmail);
+            seatHoldReservationRepository.save(seatHoldReservation);
+        }
+
         return holdSeat;
     }
 
@@ -124,6 +134,15 @@ public class TicketServiceImpl implements TicketService {
     public String reserveSeatsHold(int seatHoldId, String customerEmail) throws ReservationException,
             SeatHoldNotFoundException, LevelNotFoundException {
 
+        // seatHold Id and emailId validation
+        SeatHoldReservation seatHoldReservation = seatHoldReservationRepository.findBySeatHoldIdAndCustomerEmail(seatHoldId,customerEmail);
+
+        if (seatHoldReservation == null) {
+            throw new SeatHoldNotFoundException(" No hold seats are found with seatHoldId" + seatHoldId
+                    + " for given email");
+        }
+
+        // cache Validation
         SeatHold seatHold = null;
         Cache seatHoldCache = (Cache) cacheManager.getCache("seatHoldCache");
         if (seatHoldCache != null) {
@@ -134,11 +153,10 @@ public class TicketServiceImpl implements TicketService {
         }
 
         if (seatHold == null) {
-            // throw new SeatHoldNotFoundException(" SeatHoldId " + seatHoldId +
-            // " not found");
-            throw new SeatHoldNotFoundException(" No hold seats are found with customer emailId - " + customerEmail);
+            throw new SeatHoldNotFoundException(" No hold seats are found in cache with seatHoldId - "+ seatHoldId + " and customer emailId - "
+                    + customerEmail);
         }
-        return reserveSeatsHoldModel(seatHold, seatHold.getId(), customerEmail);
+        return reserveSeatsHoldModel(seatHold, seatHoldId, customerEmail);
     }
 
     @CacheEvict(cacheNames = "seatHoldCache", key = "#customerEmail", beforeInvocation = true)
@@ -150,7 +168,6 @@ public class TicketServiceImpl implements TicketService {
         if (levelDetail == null) {
             throw new LevelNotFoundException("Level " + seatHold.getLevel() + " not found");
         }
-
 
         if (seatHold.getSeatsHoldCount() < levelDetail.getRemainingSeats()) {
 
@@ -174,7 +191,7 @@ public class TicketServiceImpl implements TicketService {
         return reservation.getId() + "";
     }
 
-    //method to generated unique random number
+    // method to generated unique random number
     public static Integer getRandomCode() {
         final int randomRange = 1632960; // Math.pow(36,4) - 46656;
 
@@ -182,7 +199,6 @@ public class TicketServiceImpl implements TicketService {
                                                                          // value
     }
 
-    //public SeatHold holdSeatModel(String email, Integer level, Integer seatHoldId, Integer seatsHoldCount) {
     public SeatHold holdSeatModel(String email, Integer level, Integer seatsHoldCount) {
         SeatHold seatHoldModel = new SeatHold();
         seatHoldModel.setId(getRandomCode());

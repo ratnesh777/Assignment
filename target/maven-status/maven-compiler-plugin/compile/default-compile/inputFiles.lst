@@ -4,6 +4,7 @@ E:\assignment\src\main\java\com\walmart\AppConfig.java
 E:\assignment\src\main\java\com\walmart\service\LeveLService.java
 E:\assignment\src\main\java\com\walmart\exception\SeatHoldNotFoundException.java
 E:\assignment\src\main\java\com\walmart\controller\LevelController.java
+E:\assignment\src\main\java\com\walmart\entities\SeatHoldReservation.java
 E:\assignment\src\main\java\com\walmart\service\TicketServiceImpl.java
 E:\assignment\src\main\java\com\walmart\entities\Reservation.java
 E:\assignment\src\main\java\com\walmart\AssignmentApplication.java
@@ -14,5 +15,6 @@ E:\assignment\src\main\java\com\walmart\controller\MovieReservationController.ja
 E:\assignment\src\main\java\com\walmart\exception\InvalidRequestException.java
 E:\assignment\src\main\java\com\walmart\repository\LevelRepository.java
 E:\assignment\src\main\java\com\walmart\repository\ReservationRepository.java
+E:\assignment\src\main\java\com\walmart\repository\SeatHoldReservationRepository.java
 E:\assignment\src\main\java\com\walmart\exception\ReservationNotFoundException.java
 E:\assignment\src\main\java\com\walmart\exception\LevelNotFoundException.java

@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -22,10 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity
-@Table(name = "reservation")
-@JsonIgnoreProperties(ignoreUnknown = true)
-
-public class Reservation {
+@Table(name = "seatHold_reservation")
+public class SeatHoldReservation {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,19 +30,9 @@ public class Reservation {
     private Integer id;
     
     @NotNull
-  //  @Transient
     private Integer seatHoldId;
-    
+  
     @NotEmpty
     @Column(name = "customer_email")
-    private String customerEmail;
-    
-    private Integer level;
-    
-    @Column(name = "seat_count")
-    private Integer seatsHoldCount;
-    
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "America/New_York")
-    @Column(name = "transcation_date")
-    private Date date;
+    private String  customerEmail;
 }
