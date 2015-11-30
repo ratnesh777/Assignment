@@ -37,50 +37,39 @@ public class AppConfig {
    
     @Autowired
     public AppConfig() {
-        dataSourceJndiName="";
-        dialect = "org.hibernate.dialect.MySQLDialect";
-        driverClass = "com.mysql.jdbc.Driver";
-        showSql = true;
-        jdbcUrl = "jdbc:mysql://testwalmart.c9itiejmvela.us-west-2.rds.amazonaws.com:3306/assignment";
-        dbUser = "ratneshdb";
-        dbPassword = "ratneshdb";   
-        packagesToScan = "com.walmart";
-        persistenceUnitName= "JPAPersistenceUnit";
-        seatHoldCachingTimeInSeconds=new Long(60);
-        maxEntriesLocalHeap=new Long(1000);
-    }
+     }
     
-   // @Value("${dataSourceJndiName}")
+    @Value("${dataSourceJndiName}")
     private String dataSourceJndiName;
     
- //   @Value("${hibernate.dialect}")
+    @Value("${hibernate.dialect}")
     private String dialect;
     
-//    @Value("${hibernate.connection.driver_class}")
+    @Value("${hibernate.connection.driver_class}")
     private String driverClass;
     
-//    @Value("${hibernate.connection.url}")
+    @Value("${hibernate.connection.url}")
     private String jdbcUrl;
 
- //   @Value("${db.username}")
+    @Value("${db.username}")
     private String dbUser;
     
- //   @Value("${db.password}")
+    @Value("${db.password}")
     private String dbPassword;
     
-   // @Value("${hibernate.show_sql}")
+   @Value("${hibernate.show_sql}")
     private boolean showSql;
 
-  //  @Value("${hibernate.jpa.persistenceUnitName}")
+    @Value("${hibernate.jpa.persistenceUnitName}")
     private String persistenceUnitName;
    
-  //  @Value("${hibernate.packagesToScan}")
+   @Value("${hibernate.packagesToScan}")
     private String packagesToScan;
     
-   // @Value("${seatHoldCachingTimeInSeconds}")
+    @Value("${seatHoldCachingTimeInSeconds}")
     private Long seatHoldCachingTimeInSeconds;
 
- //   @Value("${maxEntriesLocalHeap}")
+    @Value("${maxEntriesLocalHeap}")
     private Long maxEntriesLocalHeap;
     
    
