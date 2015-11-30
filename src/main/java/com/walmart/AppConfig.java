@@ -41,9 +41,9 @@ public class AppConfig {
         dialect = "org.hibernate.dialect.MySQLDialect";
         driverClass = "com.mysql.jdbc.Driver";
         showSql = true;
-        jdbcUrl = "jdbc:mysql://sch-ltm-mysd014.clpixsi6ki95.us-east-1.rds.amazonaws.com:3306/dplocal";
-        dbUser = "ltm014d";
-        dbPassword = "3d20QE8HAXHe";
+        jdbcUrl = "jdbc:mysql://testwalmart.c9itiejmvela.us-west-2.rds.amazonaws.com:3306/assignment";
+        dbUser = "ratneshdb";
+        dbPassword = "ratneshdb";   
         packagesToScan = "com.walmart";
         persistenceUnitName= "JPAPersistenceUnit";
         seatHoldCachingTimeInSeconds=new Long(60);

@@ -25,7 +25,7 @@ public class LevelRepositoryTest {
     @Test
     public void testGetLevelById() {
         int levelId = 1;
-        int totalSeats = 1250;
+        Integer totalSeats = 1250;
 
         LevelDetail levelDetail = levelRepository.findOne(levelId);
         assertNotNull("LevelDetail should not be null", levelDetail);

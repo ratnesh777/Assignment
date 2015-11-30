@@ -28,33 +28,33 @@ public class LevelDetail {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    private Integer id;
+    Integer id;
  
     @NotEmpty
     @Length(max = MAX_LEN_NAME)
     @Column(name = "level_name", nullable = false, length = MAX_LEN_NAME)
-    private String levelName;
+    String levelName;
 
     @NotNull
     @Min(value=1)
     @Column(name = "rows", nullable = false)
-    int rows;
+    Integer rows;
     
     @NotNull
     @Min(value=1)
     @Column(name = "seats_per_row", nullable = false)
-    int seatsPerRow;
+    Integer seatsPerRow;
     
     @NotNull
     @Min(value=1)
     @Column(name = "price", nullable = false)
-    private int price;
+    Integer price;
 
     @Column(name = "total_seats")
-    private int totalSeats;
+    Integer totalSeats;
     
     @Column(name = "remaining_seats")
-    private int remainingSeats ;
+    Integer remainingSeats ;
     
     @Override
     public String toString() {
