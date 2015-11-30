@@ -41,7 +41,7 @@ public class TicketServiceImplTest_MinimumMockingTest {
     private TicketService ticketService;
 
     @Test
-    public void shouldReturnTotalNumberofSeatsIfGivenLevelIsEmpty() throws Exception {
+    public void shouldReturnTotalNumberofSeatsWhenGivenLevelIsEmpty() throws Exception {
         Optional<Integer> level = Optional.empty();
         int seats = ticketService.numSeatsAvailable(level);
         assertNotNull("seat count should not be null", seats);
@@ -67,7 +67,7 @@ public class TicketServiceImplTest_MinimumMockingTest {
     }
 
     @Test
-    public void shouldReturnSeatHoldInformationIfSameLevelPassedPassedInRequest() throws Exception {
+    public void shouldReturnSeatHoldInformationWhenSameLevelPassedPassedInRequest() throws Exception {
 
         SeatHold seats = ticketService.findAndHoldSeats(seatCount, maxLevel, maxLevel, "test@gmail.com");
         assertNotNull("seat count should not be null", seats);
@@ -77,7 +77,7 @@ public class TicketServiceImplTest_MinimumMockingTest {
     }
 
     @Test
-    public void shouldReturnReservationIdForCustomerIfSeatsAreHold() throws Exception {
+    public void shouldReturnReservationIdForCustomerWhenSeatsAreHold() throws Exception {
 
         SeatHold seatHold = ticketService.findAndHoldSeats(seatCount, minLevel, maxLevel, CUST_EMAIL);
         assertNotNull("seat count should not be null", seatHold);
@@ -94,6 +94,35 @@ public class TicketServiceImplTest_MinimumMockingTest {
         levelDetail.setRemainingSeats(levelDetail.getRemainingSeats() + seatCount);
         levelRepository.save(levelDetail);
     }
+    
+    @Test
+    public void shouldReturnErrorWhenfDifferentSeatIdPassedAtTheTimeOfReservation() throws Exception {
+       
+        boolean thrown = false;
+        SeatHold seatHold = ticketService.findAndHoldSeats(seatCount, minLevel, maxLevel, CUST_EMAIL);
+        assertNotNull("seat count should not be null", seatHold);
+        try {
+         ticketService.reserveSeatsHold(335543545, seatHold.getCustomerEmail());
+        } catch (SeatHoldNotFoundException re) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+    
+    @Test
+    public void shouldReturnErrorWhenfDifferentEmailIdPassedAtTheTimeOfReservation() throws Exception {
+       
+        boolean thrown = false;
+        SeatHold seatHold = ticketService.findAndHoldSeats(seatCount, minLevel, maxLevel, CUST_EMAIL);
+        assertNotNull("seat count should not be null", seatHold);
+        try {
+         ticketService.reserveSeatsHold(seatHold.getId(), "abc@gmail.com");
+        } catch (SeatHoldNotFoundException re) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+    
 
     @Test
     public void shouldReturnErrorIfSeatsArsNotHoldForCustomer() throws Exception {
