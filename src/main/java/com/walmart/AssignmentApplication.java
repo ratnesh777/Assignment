@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+
 public class AssignmentApplication {
 
   
@@ -19,5 +20,7 @@ public class AssignmentApplication {
     public String hello(){
         return "Hello test FEED";
     }
-     
+   
+   
+    
 }
